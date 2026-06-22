@@ -1,0 +1,15 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "env": {
+    "GEMINI_API_KEY": "",
+    "OLLAMA_API_BASE": "http://localhost:11434",
+    "HUGGINGFACE_API_KEY": "",
+    "OPEN_SOURCE_API_BASE": "",
+    "DEEPSEEK_API_KEY": ""
+  }
+}
