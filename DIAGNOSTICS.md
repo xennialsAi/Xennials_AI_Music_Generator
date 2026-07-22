@@ -1,6 +1,6 @@
-# Lyria Studio - Central Diagnostic Hub & Run-time Error Log
+# Xennials Studio - Central Diagnostic Hub & Run-time Error Log
 
-This document serves as the central log and mitigation archive for Lyria Studio. Any critical failures, bottlenecks, or browser exceptions caught at run-time are updated here for automated AI reference and developer diagnostics.
+This document serves as the central log and mitigation archive for Xennials Studio. Any critical failures, bottlenecks, or browser exceptions caught at run-time are updated here for automated AI reference and developer diagnostics.
 
 ---
 
@@ -21,7 +21,7 @@ This document serves as the central log and mitigation archive for Lyria Studio.
 *This section is dynamically appended / logged during active user and AI development runtime sessions.*
 
 ### [LOG_ENTRY_001] Browser Audio Autoplay Locked
-- **Detection Method**: Kdenlive DAW auto-detection (`tempCtx.state === 'suspended'`)
+- **Detection Method**: Xennials DAW auto-detection (`tempCtx.state === 'suspended'`)
 - **Severity**: Low (Warning)
 - **Mitigation applied**: Rendered high-contrast Audio Overlay offering an explicit user gesture pathway to trigger `.resume()`, which securely primes the audio thread.
 

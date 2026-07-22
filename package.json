@@ -1,5 +1,5 @@
 {
-  "name": "lyria-studio",
+  "name": "xennials-studio",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@google/genai": "^1.34.0",
+    "firebase": "^12.15.0",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.21.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"

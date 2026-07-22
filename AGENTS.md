@@ -1,6 +1,6 @@
 # Agent Instructions & Project Context
 
-This file serves as the core reference for any AI agent or developer updating **Lyria Studio**. Make sure to adhere to these design parameters, performance constraints, and architectural guidelines during any future modifications.
+This file serves as the core reference for any AI agent or developer updating **Xennials Studio**. Make sure to adhere to these design parameters, performance constraints, and architectural guidelines during any future modifications.
 
 ---
 
@@ -8,7 +8,7 @@ This file serves as the core reference for any AI agent or developer updating **
 The browser strictly restricts standard audio tags or Web Audio `AudioContext` from making output sounds unless initialized during an active user interaction session (click, tap, keyboard input).
 
 ### 1. The Locking Pattern
-* On entry, the Kdenlive DAW detects if the Web Audio instance is initialized as `suspended` and starts in a locked/muted state.
+* On entry, the Xennials DAW detects if the Web Audio instance is initialized as `suspended` and starts in a locked/muted state.
 * **Workaround (Unmute & Activate Overlay)**: To unlock browser audio dynamically, the editor provides a secure modal overlay and an upper unmuting switch. Clicking these triggers standard `.resume()` calls on the AudioContext and executes a tiny, silent oscillator tick to register high-priority human gesture permissions across chrome tracks.
 * **Strict Constraint**: Ensure future updates to the synthesized chord sequencer, live bass filters, or playheads never bypass or break this security pattern, as doing so will crash state-level sound initialization handlers.
 
@@ -18,7 +18,7 @@ Modern web browsers (such as Google Chrome, Chromium, Safari, and Firefox) stric
 * **Programmatic Blocks**: Programmatic attempts to resume the audio context (such as triggering play from an asynchronous timer or a React useEffect hook) are detected as non-human gestures and blocked blockwise.
 * **The Gesture Requirement**: To resolve these blocks, the browser requires an explicit, direct, and synchronous human interaction (such as clicking an active button) as a security handshake to activate sound layers.
 
-### 3. How to Instantly Fix This in Lyria Studio
+### 3. How to Instantly Fix This in Xennials Studio
 We have integrated a standard security workaround matching high-end digital audio workstations:
 * **Method A: Use the "Unlock Engine" Button (Recommended)**:
   On page entry, look at the center visual preview canvas monitor. You will see a dark overlay labeled Autoplay Protection.

@@ -85,3 +85,57 @@ export const generateCoverArt = async (musicPrompt: string, lyricContext: string
     return null;
   }
 };
+
+/**
+ * Generates custom, theme-appropriate rhymes or lyrical phrases using Gemini.
+ * @param theme The chosen retro theme (e.g., Midnight City, Cyberpunk Future).
+ * @param searchWord Optional word to rhyme with or expand upon.
+ * @param type The type of suggestion requested ('rhymes' | 'phrases').
+ * @returns A promise that resolves to an array of generated suggestions.
+ */
+export const generateThematicRhymesAndPhrases = async (
+  theme: string,
+  searchWord: string,
+  type: 'rhymes' | 'phrases'
+): Promise<string[]> => {
+  logFunctionCall('generateThematicRhymesAndPhrases', { theme, searchWord, type });
+  try {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    let prompt = '';
+    
+    if (type === 'rhymes') {
+      prompt = `You are a retro-futuristic songwriting assistant in Xennials Studio.
+The user is writing a song around the nostalgic retro-Xennials theme: "${theme}".
+They need rhyme suggestions or short creative rhyming pairs that match this vibe for the word: "${searchWord}".
+Provide 6-8 distinct, highly creative, nostalgic, or poetic rhyming options or couplets (e.g. "tape / escape" or "screen / neon green" or single evocative rhyming words with brief context).
+Return ONLY a plain JSON array of strings, like: ["word1 / word2", "word3", "word4 / word5"]. Do not write markdown blocks or backticks, just the raw valid JSON array.`;
+    } else {
+      prompt = `You are an expert Xennial lyricist, writing in the aesthetic of late 70s to early 90s retro-futurism (synthwave, dial-up sounds, neon lights, VHS tapes, analog dust, digital dreams, lost love).
+The chosen theme is: "${theme}".
+Generate 5-6 evocative, nostalgic, deep lyrical lines or stanzas suitable for songwriting. Include appropriate timestamps or bracketed annotations like [Seconds] or [Chorus] where creative.
+Return ONLY a plain JSON array of strings, like: ["Line 1...", "Line 2...", "Line 3..."]. Do not write markdown blocks or backticks, just the raw valid JSON array.`;
+    }
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+      }
+    });
+
+    logGenAiCall("gemini-3.5-flash", prompt, {}, response);
+
+    if (response.text) {
+      const parsed = JSON.parse(response.text.trim());
+      if (Array.isArray(parsed)) {
+        return parsed.map(item => String(item));
+      }
+    }
+    return [];
+  } catch (err) {
+    console.error("Failed to generate thematic suggestions:", err);
+    return [];
+  }
+};
+

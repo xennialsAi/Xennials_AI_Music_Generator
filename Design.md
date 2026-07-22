@@ -1,7 +1,7 @@
-# Lyria Studio Design Document
+# Xennials Studio Design Document
 
 ## Overview
-Lyria Studio is a prototype application for generating music tracks using Google's GenAI models. It allows users to input prompts (either manually or via a structured helper), select track durations, and provide custom lyrics or images to guide the generation process.
+Xennials Studio is a prototype application for generating music tracks using Google's GenAI models. It allows users to input prompts (either manually or via a structured helper), select track durations, and provide custom lyrics or images to guide the generation process.
 
 ## Features
 

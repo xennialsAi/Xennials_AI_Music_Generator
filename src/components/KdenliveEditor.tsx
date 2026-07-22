@@ -3,7 +3,7 @@ import {
   Play, Pause, Sliders, Music, Video, Scissors, Trash2, SlidersHorizontal, 
   Settings, Volume2, VolumeX, Mic, Activity, Layers, Lock, Unlock, Eye, EyeOff, 
   RotateCcw, Download, Plus, AlertCircle, Sparkles, Check, HelpCircle,
-  FileVideo, FileAudio, ZoomIn, ZoomOut, Save, ChevronRight
+  FileVideo, FileAudio, ZoomIn, ZoomOut, Save, ChevronRight, Share2
 } from 'lucide-react';
 import { SongResult } from '../../types';
 import { getAudioContext, useAudioEngine } from '../hooks/useAudioEngine';
@@ -37,7 +37,7 @@ export interface KdenliveTrack {
 }
 
 interface KdenliveEditorProps {
-  /** Generated song results from the main Lyria Studio */
+  /** Generated song results from the main Xennials Studio */
   results: SongResult[];
   /** Callback to trigger a notification or log message in parent */
   onAddLog?: (id: string, msg: string) => void;
@@ -207,6 +207,126 @@ export const KdenliveEditor: React.FC<KdenliveEditorProps> = ({
     await unlockEngine();
     if (onAddLog) {
       onAddLog('audio-engine-unlocked', '🔒 Web Audio Engine securely unlocked via explicit user interaction gesture.');
+    }
+  };
+
+  // Bridge export pipeline for Antigravity & custom protocol URI hooks
+  const [isExportingToAntigravity, setIsExportingToAntigravity] = useState<boolean>(false);
+
+  const exportToAntigravityStudio = async () => {
+    setIsExportingToAntigravity(true);
+    if (onAddLog) {
+      onAddLog('antigravity-bridge-init', 'Initiating high-speed code & composition export bridge to Antigravity...');
+    }
+
+    try {
+      // Gather active editor code files dynamically via Vite fetch so the actual updated code resolves correctly
+      let kdenliveCode = '';
+      let appCode = '';
+      let indexCode = '';
+
+      try {
+        const r1 = await fetch('/src/components/KdenliveEditor.tsx');
+        if (r1.ok) kdenliveCode = await r1.text();
+      } catch (e) {
+        console.warn('Could not fetch KdenliveEditor.tsx source dynamically', e);
+      }
+
+      try {
+        const r2 = await fetch('/App.tsx');
+        if (r2.ok) appCode = await r2.text();
+      } catch (e) {
+        console.warn('Could not fetch App.tsx source dynamically', e);
+      }
+
+      try {
+        const r3 = await fetch('/index.tsx');
+        if (r3.ok) indexCode = await r3.text();
+      } catch (e) {
+        console.warn('Could not fetch index.tsx source dynamically', e);
+      }
+
+      // Collect complete studio/timeline structures
+      const projectBundle = {
+        meta: {
+          appName: "Xennials Studio",
+          timestamp: new Date().toISOString(),
+          version: "3.0.0-antigravity-bridge",
+          authorEmail: "teefisher314@gmail.com",
+          activeLayout: activeLayout
+        },
+        state: {
+          timelineClips: timelineClips,
+          tracks: tracks,
+          binClips: binClips,
+          currentTime: currentTime,
+          activeImportedSong: activeImportedSong || null
+        },
+        codebase: {
+          'KdenliveEditor.tsx': kdenliveCode || '// Code content loaded inside runtime bundle',
+          'App.tsx': appCode || '// App layer root bundle',
+          'index.tsx': indexCode || '// Main bootstrap entry'
+        }
+      };
+
+      const serializedData = JSON.stringify(projectBundle);
+      // Create Base64 option for high-compatibility cross-app URIs
+      const base64Data = btoa(unescape(encodeURIComponent(serializedData)));
+
+      // 1. Dispatch custom event triggers as safe window postMessage channels
+      if (window.parent && window.parent !== window) {
+        console.log('[Antigravity Bridge] Broadcasting timeline bundle & codebase to AI Studio parent...');
+        window.parent.postMessage({
+          type: 'ANTIGRAVITY_EXPORT',
+          appName: 'Xennials Studio',
+          payload: projectBundle,
+          rawJson: serializedData
+        }, '*');
+
+        window.parent.postMessage({
+          type: 'EXPORT_CODE_TO_ANTIGRAVITY',
+          payload: {
+            appCode,
+            kdenliveCode,
+            projectBundle
+          }
+        }, '*');
+      }
+
+      // 2. Open / trigger deep-link protocol handlers to activate registered local Antigravity apps
+      // Securely invoke custom URIs matching standard, multi-version, and custom antigravity protocol definitions
+      const protocolURIs = [
+        `antigravity://import?project=xennials-studio&payload=${encodeURIComponent(serializedData)}`,
+        `antigravity://export?project=xennials-studio&base64=${encodeURIComponent(base64Data)}`,
+        `antigravity-studio://import?payload=${encodeURIComponent(serializedData)}`,
+        `antigravity-app://open?payload=${encodeURIComponent(serializedData)}`
+      ];
+
+      protocolURIs.forEach((uri, idx) => {
+        setTimeout(() => {
+          console.log(`[Antigravity Bridge] Launching deep link (${idx+1}/${protocolURIs.length}):`, uri.substring(0, 80) + '...');
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = uri;
+          document.body.appendChild(iframe);
+          
+          // Remove iframe after short delay
+          setTimeout(() => {
+            document.body.removeChild(iframe);
+          }, 1000);
+        }, idx * 150);
+      });
+
+      if (onAddLog) {
+        onAddLog('antigravity-bridge-success', '🎉 Antigravity Export successfully dispatched. Project state & codebase linked.');
+      }
+
+      alert('Successfully triggered Antigravity Bridge! The timeline state, project structures, and live component code files have been posted to the Google AI Studio parent frame and loaded into custom protocol handlers.');
+    } catch (err: any) {
+      console.error('[Antigravity Bridge] Critical Failure:', err);
+      alert(`Bridge Exception: ${err.message || 'Unknown protocol error'}`);
+    } finally {
+      setIsExportingToAntigravity(false);
     }
   };
 
@@ -773,7 +893,7 @@ export const KdenliveEditor: React.FC<KdenliveEditorProps> = ({
       ctx.font = '500 18px Inter, monospace';
       ctx.fillStyle = 'rgba(156, 163, 175, 0.8)';
       ctx.textAlign = 'center';
-      ctx.fillText('[KDENLIVE DIGITAL MONITOR IDLE]', canvas.width / 2, canvas.height / 2);
+      ctx.fillText('[XENNIALS DIGITAL MONITOR IDLE]', canvas.width / 2, canvas.height / 2);
       ctx.font = '500 13px Inter, sans-serif';
       ctx.fillText('Press Spacebar or Play to Render Timelines', canvas.width / 2, canvas.height / 2 + 30);
       ctx.restore();
@@ -1073,6 +1193,9 @@ export const KdenliveEditor: React.FC<KdenliveEditorProps> = ({
       dlLink.download = 'Xennials_Studio_DAW_Master_Output.webm';
       dlLink.click();
       
+      // Auto-trigger Antigravity Bridge export to correctly update external handler
+      exportToAntigravityStudio();
+
       // Restore standard master nodes bindings
       (Object.values(channelNodesRef.current) as Array<{ gain: GainNode; pan: StereoPannerNode; analyser: AnalyserNode }>).forEach(node => {
         node.gain.disconnect();
@@ -1569,8 +1692,17 @@ export const KdenliveEditor: React.FC<KdenliveEditorProps> = ({
 
             <div className="flex gap-2 text-[10px] font-bold">
               <button 
+                onClick={exportToAntigravityStudio}
+                disabled={isExportingToAntigravity}
+                className="bg-gradient-to-r from-cyan-500 via-emerald-500 to-orange-500 hover:opacity-90 disabled:opacity-55 active:scale-95 text-white px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-lg shadow-cyan-500/20 transition-all border border-cyan-400/20"
+                title="Bridge & export project timeline structure and code files directly to Antigravity"
+              >
+                <Share2 className={`w-3.5 h-3.5 ${isExportingToAntigravity ? 'animate-spin' : ''}`} /> 
+                {isExportingToAntigravity ? 'Exporting...' : 'Export to Antigravity'}
+              </button>
+              <button 
                 onClick={compileTimelineWebMAndDownload}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl flex items-center gap-1.5 shadow"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl flex items-center gap-1.5 shadow hover:scale-[1.01] active:scale-[0.99] transition-transform"
               >
                 <Download className="w-3.5 h-3.5" /> Bake Composition (WebM)
               </button>
@@ -1663,7 +1795,7 @@ export const KdenliveEditor: React.FC<KdenliveEditorProps> = ({
                     const gainVal = parseFloat(e.target.value);
                     masterGainRef.current?.gain.setValueAtTime(gainVal, audioContextRef.current?.currentTime || 0);
                   }}
-                  className="w-18 h-1 accent-purple-500 bg-gray-800 rounded select-none absolute"
+                  className="w-16 h-1 accent-purple-500 bg-gray-800 rounded select-none absolute"
                   style={{ transform: 'rotate(-90deg)', transformOrigin: 'center' }}
                 />
               </div>

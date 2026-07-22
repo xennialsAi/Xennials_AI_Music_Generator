@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Pre-Commit Static Analysis & Health Guard Script for Lyria Studio
+ * Pre-Commit Static Analysis & Health Guard Script for Xennials Studio
  * 
  * Conducts lint, compiling, type safety audits, and unoptimized loop inspection.
  * Run in terminal via 'node pre-commit-check.js'.
@@ -21,7 +21,7 @@ const RESET = '\x1b[0m';
 const BOLD = '\x1b[1m';
 
 console.log(`${BOLD}${BLUE}===================================================`);
-console.log(`📡 LYRIA HEALTH GUARD: PRE-COMMIT SECURE AUDIT`);
+console.log(`📡 XENNIALS HEALTH GUARD: PRE-COMMIT SECURE AUDIT`);
 console.log(`===================================================${RESET}\n`);
 
 const HEALTH_ISSUES = [];
@@ -135,7 +135,7 @@ if (compileSuccess) {
 
 // Summary Report
 console.log(`\n${BOLD}${BLUE}===================================================`);
-console.log(`📊 LYRIA HEALTH REPORT SUMMARY`);
+console.log(`📊 XENNIALS HEALTH REPORT SUMMARY`);
 console.log(`===================================================${RESET}`);
 
 if (HEALTH_ISSUES.length === 0) {
